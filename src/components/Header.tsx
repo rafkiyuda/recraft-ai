@@ -7,10 +7,21 @@ export default function Header() {
         <header className="sticky top-0 w-full max-w-md mx-auto bg-white/80 backdrop-blur-md z-50 border-b border-neutral-100">
             <div className="flex items-center justify-between px-4 h-14">
                 <Link href="/" className="flex items-center space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold text-lg">
-                        R
+                    <div className="relative w-10 h-10 flex items-center justify-center">
+                        <img
+                            src="/assets/logo.png"
+                            alt="Logo"
+                            className="w-full h-full object-contain"
+                            onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                            }}
+                        />
+                        <div className="hidden w-full h-full rounded-full bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white font-bold text-lg">
+                            R
+                        </div>
                     </div>
-                    <span className="font-bold text-lg tracking-tight">ReCraft</span>
+                    <span className="font-bold text-lg tracking-tight text-primary">ReCraft</span>
                 </Link>
                 <div className="flex items-center space-x-3">
                     <button className="relative p-2 text-neutral-600 hover:text-primary transition-colors">

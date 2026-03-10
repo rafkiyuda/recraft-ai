@@ -28,9 +28,9 @@ export default function DonatePage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-2xl font-bold mb-2 text-neutral-900"
+                    className="text-2xl font-bold mb-2 text-primary-dark"
                 >
-                    Pickup Scheduled!
+                    Penjemputan Dijadwalkan!
                 </motion.h2>
 
                 <motion.p
@@ -39,7 +39,7 @@ export default function DonatePage() {
                     transition={{ delay: 0.3 }}
                     className="text-neutral-500 mb-8 max-w-[250px]"
                 >
-                    Our courier will arrive at your location on the selected date. Thank you for recycling!
+                    Kurir kami akan tiba di lokasi Anda pada tanggal yang dipilih. Terima kasih telah mendaur ulang!
                 </motion.p>
 
                 <motion.button
@@ -47,9 +47,9 @@ export default function DonatePage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
                     onClick={() => setIsSubmitted(false)}
-                    className="bg-neutral-900 text-white px-8 py-3 rounded-full font-bold hover:bg-neutral-800 transition-colors"
+                    className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:bg-primary-dark transition-colors"
                 >
-                    Done
+                    Selesai
                 </motion.button>
             </div>
         );
@@ -58,8 +58,8 @@ export default function DonatePage() {
     return (
         <div className="flex flex-col gap-6 p-4">
             <div className="flex flex-col gap-1 mt-2">
-                <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Donate Plastic</h1>
-                <p className="text-sm text-neutral-500">Request a pickup and earn points.</p>
+                <h1 className="text-2xl font-bold tracking-tight text-primary-dark">Donasi Plastik</h1>
+                <p className="text-sm text-neutral-500">Ajukan penjemputan dan dapatkan poin.</p>
             </div>
 
             {/* Info Card */}
@@ -83,13 +83,13 @@ export default function DonatePage() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
                 <div className="flex flex-col gap-2">
-                    <label className="text-sm font-semibold text-neutral-700 ml-1">Pickup Location</label>
+                    <label className="text-sm font-semibold text-neutral-700 ml-1">Lokasi Penjemputan</label>
                     <div className="relative">
                         <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
                         <input
                             required
                             type="text"
-                            placeholder="Enter your full address"
+                            placeholder="Masukkan alamat lengkap Anda"
                             className="w-full bg-white border border-neutral-200 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                         />
                     </div>
@@ -97,7 +97,7 @@ export default function DonatePage() {
 
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-neutral-700 ml-1">Preferred Date</label>
+                        <label className="text-sm font-semibold text-neutral-700 ml-1">Tanggal Pilihan</label>
                         <div className="relative">
                             <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
                             <input
@@ -109,11 +109,11 @@ export default function DonatePage() {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-neutral-700 ml-1">Est. Weight</label>
+                        <label className="text-sm font-semibold text-neutral-700 ml-1">Est. Berat</label>
                         <div className="relative">
                             <Weight className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
                             <select required className="w-full bg-white border border-neutral-200 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none text-neutral-700">
-                                <option value="">Select weight</option>
+                                <option value="">Pilih berat</option>
                                 <option value="1-5">&lt; 5 kg</option>
                                 <option value="5-10">5 - 10 kg</option>
                                 <option value="10-20">10 - 20 kg</option>
@@ -124,9 +124,9 @@ export default function DonatePage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <label className="text-sm font-semibold text-neutral-700 ml-1">Additional Notes</label>
+                    <label className="text-sm font-semibold text-neutral-700 ml-1">Catatan Tambahan</label>
                     <textarea
-                        placeholder="e.g., Leave it at the front gate..."
+                        placeholder="misalnya: Tinggalkan di depan pagar..."
                         rows={3}
                         className="w-full bg-white border border-neutral-200 rounded-2xl py-3 px-4 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
                     />
@@ -139,7 +139,7 @@ export default function DonatePage() {
                         type="submit"
                         className="w-full bg-primary text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/30 pointer-events-auto flex justify-center items-center gap-2"
                     >
-                        Confirm Request
+                        Konfirmasi Permintaan
                     </motion.button>
                 </div>
             </form>

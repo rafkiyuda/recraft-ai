@@ -70,7 +70,7 @@ export default function ScanPage() {
                 <button onClick={() => router.back()} className="p-2 bg-white/20 backdrop-blur-md rounded-full text-white">
                     <ChevronLeft className="w-6 h-6" />
                 </button>
-                <span className="text-white font-medium">Scan Plastic</span>
+                <span className="text-white font-medium">Scan Plastik</span>
                 <div className="w-10"></div>
             </div>
 
@@ -97,10 +97,10 @@ export default function ScanPage() {
                                     initial={{ top: "-10%" }}
                                     animate={{ top: "110%" }}
                                     transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                                    className="absolute left-0 right-0 h-2 bg-primary shadow-[0_0_25px_rgba(230,122,60,1)] z-30"
+                                    className="absolute left-0 right-0 h-2 bg-primary shadow-[0_0_25px_rgba(16,185,129,1)] z-30"
                                 />
                             </div>
-                            <p className="text-white mt-6 font-medium animate-pulse">Analyzing Material with AI...</p>
+                            <p className="text-white mt-6 font-medium animate-pulse">Menganalisis Material dengan AI...</p>
                         </div>
                     </>
                 )}
@@ -119,13 +119,13 @@ export default function ScanPage() {
                             exit={{ opacity: 0, scale: 0.9 }}
                             className="flex flex-col items-center gap-6 w-full absolute top-6 pointer-events-auto"
                         >
-                            <div className="flex items-center gap-2 px-4 py-2 bg-neutral-900 rounded-full border border-neutral-800 text-sm">
-                                <Zap className="w-4 h-4 text-primary" />
-                                <span>Point at any plastic item</span>
+                            <div className="flex items-center gap-2 px-4 py-2 bg-primary-dark rounded-full border border-primary/20 text-sm">
+                                <Zap className="w-4 h-4 text-primary-light" />
+                                <span>Arahkan ke benda plastik apa pun</span>
                             </div>
 
                             <div className="flex justify-between items-center w-full px-4">
-                                <button className="p-4 bg-neutral-900 rounded-full text-neutral-400 hover:text-white transition-colors">
+                                <button className="p-4 bg-primary-dark rounded-full text-neutral-300 hover:text-white transition-colors">
                                     <ImageIcon className="w-6 h-6" />
                                 </button>
 
@@ -166,11 +166,11 @@ export default function ScanPage() {
                             </div>
 
                             <div className="mt-2 h-[40vh] overflow-y-auto pr-2 flex flex-col gap-3 pb-20">
-                                <h4 className="font-semibold text-primary">DIY Ideas</h4>
+                                <h4 className="font-semibold text-primary">Ide DIY</h4>
                                 {result.ideas.map((idea, index) => (
-                                    <div key={index} className="bg-neutral-900 border border-neutral-800 p-4 rounded-2xl">
+                                    <div key={index} className="bg-primary-dark border border-primary/10 p-4 rounded-2xl">
                                         <h5 className="font-bold text-white text-sm mb-1">{idea.title}</h5>
-                                        <p className="text-neutral-400 text-xs leading-relaxed">{idea.description}</p>
+                                        <p className="text-white/70 text-xs leading-relaxed">{idea.description}</p>
                                     </div>
                                 ))}
                             </div>

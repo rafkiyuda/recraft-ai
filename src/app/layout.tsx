@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Identify, recycle, and monetize plastic waste through an integrated digital ecosystem using AI Computer Vision.",
 };
 
+import { CartProvider } from "@/context/CartContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,13 +21,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased bg-white min-h-screen pb-safe`}>
-        <div className="max-w-md mx-auto min-h-screen bg-white shadow-xl relative overflow-x-hidden flex flex-col">
-          <Header />
-          <main className="flex-1 overflow-y-auto pb-20">
-            {children}
-          </main>
-          <BottomNav />
-        </div>
+        <CartProvider>
+          <div className="max-w-md mx-auto min-h-screen bg-white shadow-xl relative overflow-x-hidden flex flex-col">
+            <Header />
+            <main className="flex-1 overflow-y-auto pb-20">
+              {children}
+            </main>
+            <BottomNav />
+          </div>
+        </CartProvider>
       </body>
     </html>
   );

@@ -1,121 +1,211 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Users, Flame, Trophy, MapPin, Search, ChevronRight } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+    Users,
+    Flame,
+    Trophy,
+    MapPin,
+    Search,
+    ChevronRight,
+    Calendar,
+    UserPlus,
+    Sparkles,
+    CheckCircle2
+} from "lucide-react";
+
+const COMMUNITY_ACTIVITIES = [
+    {
+        id: 1,
+        title: "Cleanup Day Pantai Ancol",
+        description: "Aksi bersih-bersih pantai bersama komunitas. Sampah plastik akan didaur ulang menjadi...",
+        date: "05 Mar 2025, 07:00",
+        location: "Pantai Ancol, Jakarta Utara",
+        participants: "Maks. 50 peserta",
+        organizer: "Coastal Cleanup Indonesia",
+        category: "Cleanup",
+        type: "event",
+        icon: <Sparkles className="w-6 h-6 text-white" />
+    },
+    {
+        id: 2,
+        title: "Workshop: Kreasi Pot dari PVC",
+        description: "Ubah pipa PVC bekas menjadi pot tanaman yang estetik dan fungsional di rumah.",
+        date: "12 Mar 2025, 13:00",
+        location: "ReCraft Studio, Jakarta",
+        participants: "Maks. 15 peserta",
+        organizer: "Eco Art Studio",
+        category: "Workshop",
+        type: "event",
+        icon: <Trophy className="w-6 h-6 text-white" />
+    },
+    {
+        id: 3,
+        title: "DIY Project: Wall Decor Eco",
+        description: "Proyek DIY mingguan: membuat dekorasi dinding dari tutup botol berwarna.",
+        date: "Setiap Sabtu",
+        location: "Online (Zoom)",
+        participants: "Unlimited",
+        organizer: "ReCraft Community",
+        category: "DIY Project",
+        type: "event",
+        icon: <MapPin className="w-6 h-6 text-white" />
+    }
+];
 
 export default function CommunityPage() {
-    const router = useRouter();
+    const [selectedCategory, setSelectedCategory] = useState("Semua");
+
+    const categories = ["Semua", "DIY Project", "Workshop", "Challenge"];
+
+    const filteredActivities = selectedCategory === "Semua" || selectedCategory === "Challenge"
+        ? COMMUNITY_ACTIVITIES
+        : COMMUNITY_ACTIVITIES.filter(a => a.category === selectedCategory);
 
     return (
-        <div className="flex flex-col gap-6 p-4">
+        <div className="flex flex-col gap-6 p-4 pb-24 bg-white min-h-screen">
             {/* Header */}
             <div className="flex justify-between items-center mt-2">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-neutral-900">Community</h1>
-                    <p className="text-sm text-neutral-500">Join challenges & activities.</p>
+                    <h1 className="text-2xl font-black tracking-tight text-primary-dark">Komunitas</h1>
+                    <p className="text-sm text-neutral-500 font-medium tracking-tight">Temukan aksi & tantangan hijau.</p>
                 </div>
-                <div className="flex items-center gap-2">
-                    <button className="p-2 border border-neutral-200 rounded-full bg-white shadow-sm cursor-pointer">
-                        <Search className="w-5 h-5 text-neutral-600" />
-                    </button>
-                </div>
+                <button className="p-2 border border-neutral-100 rounded-full bg-white shadow-sm hover:bg-neutral-50 transition-colors">
+                    <Search className="w-5 h-5 text-neutral-600" />
+                </button>
             </div>
 
-            {/* Active Challenge Card */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="w-full relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-light to-primary text-white shadow-xl p-6"
-            >
-                <div className="relative z-10 flex flex-col gap-2">
-                    <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-1 bg-white/30 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold border border-white/40">
-                            <Flame className="w-3.5 h-3.5 text-green-300 fill-green-300" />
-                            <span>Eco Challenge</span>
-                        </div>
-                        <span className="text-xs font-medium text-white/80">3 Days Left</span>
-                    </div>
-
-                    <h2 className="text-2xl font-bold leading-tight mt-2">Create a Lamp From Plastic Bottle</h2>
-                    <p className="text-xs text-white/90">Join 1,240 eco-warriors and win 500 Eco Points!</p>
-
-                    <button className="mt-4 bg-white text-primary font-bold py-3 px-6 rounded-2xl shadow-sm hover:scale-105 transition-transform w-fit text-sm">
-                        Join Challenge
+            {/* Categories Navigation */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sticky top-0 bg-white/80 backdrop-blur-md z-30 border-b border-neutral-50 px-4">
+                {categories.map((cat, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setSelectedCategory(cat)}
+                        className={`whitespace-nowrap px-5 py-2 rounded-xl text-sm font-bold transition-all ${selectedCategory === cat
+                            ? "bg-white text-primary-dark shadow-md border-b-4 border-primary scale-105"
+                            : "bg-transparent text-neutral-400 hover:text-neutral-600"
+                            }`}
+                    >
+                        {cat}
                     </button>
-                </div>
-
-                {/* Background decorations */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-white/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
-            </motion.div>
-
-            {/* Leaderboard Sneak Peek */}
-            <div className="bg-white border border-neutral-100 rounded-3xl p-5 shadow-sm flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
-                            <Trophy className="w-4 h-4 text-yellow-500" />
-                        </div>
-                        <h3 className="font-bold text-neutral-900">Top Creators This Week</h3>
-                    </div>
-                    <ChevronRight className="w-5 h-5 text-neutral-400" />
-                </div>
-
-                <div className="flex gap-4 overflow-x-auto pb-1 scrollbar-hide">
-                    {["Sarah C.", "Budi S.", "Alicia", "Kyo"].map((name, i) => (
-                        <div key={i} className="flex flex-col items-center gap-2 min-w-[72px]">
-                            <div className="w-16 h-16 rounded-full bg-neutral-100 border-2 border-primary overflow-hidden flex items-center justify-center text-xl font-bold text-neutral-400">
-                                {name.charAt(0)}
-                            </div>
-                            <span className="text-xs font-medium text-neutral-600">{name}</span>
-                        </div>
-                    ))}
-                </div>
+                ))}
             </div>
 
-            {/* Local Cleanup Events ("Bersih Tempatmu") */}
-            <div className="flex flex-col gap-4 mt-2">
-                <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-lg text-neutral-900">Local Cleanup Events</h3>
-                    <span className="text-xs font-semibold text-primary cursor-pointer">View Map</span>
+            {/* Active Challenge Card (Featured) */}
+            {(selectedCategory === "Semua" || selectedCategory === "Challenge") && (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="w-full relative overflow-hidden rounded-[32px] bg-gradient-to-br from-primary via-primary to-primary-dark text-white shadow-xl p-7"
+                >
+                    <div className="relative z-10 flex flex-col gap-4">
+                        <div className="flex items-center justify-between w-full">
+                            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-xs font-black border border-white/20 uppercase tracking-widest">
+                                <Flame className="w-3.5 h-3.5 text-green-300 fill-green-300" />
+                                <span>Eco Challenge</span>
+                            </div>
+                            <span className="text-xs font-black opacity-80 uppercase tracking-wider">3 Days Left</span>
+                        </div>
+
+                        <div className="flex flex-col gap-2 mt-2">
+                            <h2 className="text-3xl font-black leading-[1.15]">Create a Lamp From Plastic Bottle</h2>
+                            <p className="text-sm font-medium opacity-90 leading-relaxed">
+                                Join 1,240 eco-warriors and win <span className="text-green-300 font-black">500 Eco Points!</span>
+                            </p>
+                        </div>
+
+                        <button className="mt-4 bg-white text-primary font-black py-4 px-10 rounded-2xl shadow-lg border-b-4 border-neutral-100 active:scale-95 transition-all text-base w-full sm:w-fit">
+                            Join Challenge
+                        </button>
+                    </div>
+
+                    {/* Background decorations */}
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                </motion.div>
+            )}
+
+            {/* Activities List */}
+            <div className="flex flex-col gap-5 mt-2">
+                <div className="flex items-center justify-between px-1">
+                    <h3 className="font-black text-lg text-primary-dark tracking-tight">Aktivitas Terdekat</h3>
+                    <div className="flex items-center gap-1 text-[10px] font-black text-primary uppercase tracking-widest cursor-pointer">
+                        Lihat Peta <ChevronRight className="w-3 h-3" />
+                    </div>
                 </div>
 
-                <div className="flex flex-col gap-3">
-                    {[
-                        { title: "Beach Cleanup & Sort", loc: "Kuta Beach, Bali", date: "Saturday, 08:00 AM", org: "Ocean Care" },
-                        { title: "City Park Eco Walk", loc: "Suropati Park, JKT", date: "Sunday, 06:30 AM", org: "JKT Green" }
-                    ].map((event, i) => (
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.1 * i }}
-                            key={i}
-                            className="flex items-center gap-4 p-4 rounded-3xl bg-white border border-neutral-100 shadow-sm cursor-pointer hover:shadow-md transition-all"
-                        >
-                            <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
-                                <MapPin className="w-6 h-6 text-blue-500" />
-                            </div>
-                            <div className="flex flex-col flex-1">
-                                <h4 className="font-bold text-neutral-900 leading-tight">{event.title}</h4>
-                                <p className="text-[10px] text-neutral-500 mt-1">{event.date}</p>
-                                <div className="flex items-center gap-2 mt-2">
-                                    <span className="text-[10px] font-medium text-primary bg-green-50 px-2 py-0.5 rounded-md">{event.org}</span>
-                                    <span className="text-[10px] text-neutral-400">• {event.loc}</span>
+                <div className="flex flex-col gap-4">
+                    <AnimatePresence mode="popLayout">
+                        {filteredActivities.map((activity, i) => (
+                            <motion.div
+                                layout
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                transition={{ delay: 0.05 * i }}
+                                key={activity.id}
+                                className="bg-[#f2fcf1] border border-neutral-50 rounded-[32px] p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5 relative overflow-hidden group"
+                            >
+                                {/* Category Badge */}
+                                <div className="absolute top-6 right-6">
+                                    <span className="bg-white/90 backdrop-blur-md text-primary-dark px-3 py-1.5 rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-sm border border-neutral-100">
+                                        {activity.category}
+                                    </span>
                                 </div>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-neutral-300" />
-                        </motion.div>
-                    ))}
+
+                                <div className="flex flex-col gap-4">
+                                    {/* Icon Box */}
+                                    <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                                        {activity.icon}
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <h4 className="text-xl font-black text-primary-dark leading-tight">{activity.title}</h4>
+                                        <p className="text-xs text-neutral-500 font-medium mt-2 leading-relaxed opacity-80">
+                                            {activity.description}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col gap-3 pt-4 border-t border-primary/10">
+                                    <div className="flex items-center gap-3 text-xs">
+                                        <Calendar className="w-4 h-4 text-primary opacity-60" />
+                                        <span className="font-bold text-neutral-600">{activity.date}</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-xs">
+                                        <MapPin className="w-4 h-4 text-primary opacity-60" />
+                                        <span className="font-bold text-neutral-600">{activity.location}</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-xs">
+                                        <Users className="w-4 h-4 text-primary opacity-60" />
+                                        <span className="font-bold text-neutral-600">{activity.participants}</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between mt-1 pt-4 border-t border-primary/5">
+                                    <div className="flex flex-col">
+                                        <span className="text-[9px] text-neutral-400 font-black uppercase tracking-widest">Organizer</span>
+                                        <span className="text-sm font-black text-primary-dark">{activity.organizer}</span>
+                                    </div>
+                                    <button className="flex items-center gap-2 bg-primary text-white text-xs font-black px-6 py-3 rounded-2xl shadow-lg shadow-primary/20 active:scale-95 transition-all">
+                                        <UserPlus className="w-4 h-4" /> Gabung
+                                    </button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </div>
             </div>
 
-            {/* Build Together action */}
-            <button className="w-full bg-neutral-900 text-white font-bold py-4 rounded-2xl shadow-lg mt-4 flex justify-center items-center gap-2 hover:bg-neutral-800 transition-colors">
-                <Users className="w-5 h-5" /> Host an Event
-            </button>
+            {/* Empty State */}
+            {filteredActivities.length === 0 && (
+                <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
+                    <CheckCircle2 className="w-16 h-16 text-neutral-300 mb-4" />
+                    <p className="text-sm font-bold text-neutral-400">Belum ada aktivitas di kategori ini.</p>
+                </div>
+            )}
 
-            <div className="h-20"></div>
+            <div className="h-5"></div>
         </div>
     );
 }
