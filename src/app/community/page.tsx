@@ -56,6 +56,12 @@ const COMMUNITY_ACTIVITIES = [
 
 export default function CommunityPage() {
     const [selectedCategory, setSelectedCategory] = useState("Semua");
+    const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: "", visible: false });
+
+    const showToast = (msg: string) => {
+        setToast({ message: msg, visible: true });
+        setTimeout(() => setToast({ message: "", visible: false }), 3000);
+    };
 
     const categories = ["Semua", "DIY Project", "Workshop", "Challenge"];
 
@@ -64,7 +70,22 @@ export default function CommunityPage() {
         : COMMUNITY_ACTIVITIES.filter(a => a.category === selectedCategory);
 
     return (
-        <div className="flex flex-col gap-6 p-4 pb-24 bg-white min-h-screen">
+        <div className="flex flex-col gap-6 p-4 pb-24 bg-white min-h-screen relative">
+            {/* Toast Notification */}
+            <AnimatePresence>
+                {toast.visible && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20, x: "-50%" }}
+                        animate={{ opacity: 1, y: 20, x: "-50%" }}
+                        exit={{ opacity: 0, y: -20, x: "-50%" }}
+                        className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] bg-primary-dark text-white px-6 py-3 rounded-2xl shadow-2xl font-bold flex items-center gap-2 border border-white/10"
+                    >
+                        <CheckCircle2 className="w-4 h-4 text-green-400" />
+                        {toast.message}
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Header */}
             <div className="flex justify-between items-center mt-2">
                 <div>
@@ -77,7 +98,7 @@ export default function CommunityPage() {
             </div>
 
             {/* Categories Navigation */}
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sticky top-0 bg-white/80 backdrop-blur-md z-30 border-b border-neutral-50 px-4">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sticky top-0 bg-white/80 backdrop-blur-md z-30 border-b border-neutral-50">
                 {categories.map((cat, i) => (
                     <button
                         key={i}
@@ -115,7 +136,10 @@ export default function CommunityPage() {
                             </p>
                         </div>
 
-                        <button className="mt-4 bg-white text-primary font-black py-4 px-10 rounded-2xl shadow-lg border-b-4 border-neutral-100 active:scale-95 transition-all text-base w-full sm:w-fit">
+                        <button
+                            onClick={() => showToast("Pendaftaran tantangan berhasil!")}
+                            className="mt-4 bg-white text-primary font-black py-4 px-10 rounded-2xl shadow-lg border-b-4 border-neutral-100 active:scale-95 transition-all text-base w-full sm:w-fit"
+                        >
                             Join Challenge
                         </button>
                     </div>
@@ -187,7 +211,10 @@ export default function CommunityPage() {
                                         <span className="text-[9px] text-neutral-400 font-black uppercase tracking-widest">Organizer</span>
                                         <span className="text-sm font-black text-primary-dark">{activity.organizer}</span>
                                     </div>
-                                    <button className="flex items-center gap-2 bg-primary text-white text-xs font-black px-6 py-3 rounded-2xl shadow-lg shadow-primary/20 active:scale-95 transition-all">
+                                    <button
+                                        onClick={() => showToast(`Berhasil gabung ke ${activity.title}!`)}
+                                        className="flex items-center gap-2 bg-primary text-white text-xs font-black px-6 py-3 rounded-2xl shadow-lg shadow-primary/20 active:scale-95 transition-all focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                                    >
                                         <UserPlus className="w-4 h-4" /> Gabung
                                     </button>
                                 </div>
@@ -197,15 +224,26 @@ export default function CommunityPage() {
                 </div>
             </div>
 
+            {/* Create Community / Event Button */}
+            <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                onClick={() => showToast("Fitur Buat Komunitas segera hadir!")}
+                className="w-full bg-primary-dark text-white font-black py-5 rounded-[24px] shadow-xl flex justify-center items-center gap-3 hover:bg-black active:scale-[0.98] transition-all mt-4 border-b-4 border-black/20"
+            >
+                <Users className="w-6 h-6 text-green-400" />
+                <span>Buat Komunitas / Event</span>
+            </motion.button>
+
             {/* Empty State */}
-            {filteredActivities.length === 0 && (
+            {filteredActivities.length === 0 && (selectedCategory !== "Semua" && selectedCategory !== "Challenge") && (
                 <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
                     <CheckCircle2 className="w-16 h-16 text-neutral-300 mb-4" />
                     <p className="text-sm font-bold text-neutral-400">Belum ada aktivitas di kategori ini.</p>
                 </div>
             )}
 
-            <div className="h-5"></div>
+            <div className="h-10"></div>
         </div>
     );
 }
