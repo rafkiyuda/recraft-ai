@@ -57,6 +57,10 @@ const COMMUNITY_ACTIVITIES = [
 export default function CommunityPage() {
     const [selectedCategory, setSelectedCategory] = useState("Semua");
     const [toast, setToast] = useState<{ message: string; visible: boolean }>({ message: "", visible: false });
+    const [activeModal, setActiveModal] = useState<"challenge" | "event" | "host" | null>(null);
+    const [selectedEvent, setSelectedEvent] = useState<any>(null);
+    const [isJoinedChallenge, setIsJoinedChallenge] = useState(false);
+    const [joinedEvents, setJoinedEvents] = useState<number[]>([]);
 
     const showToast = (msg: string) => {
         setToast({ message: msg, visible: true });
@@ -69,6 +73,18 @@ export default function CommunityPage() {
         ? COMMUNITY_ACTIVITIES
         : COMMUNITY_ACTIVITIES.filter(a => a.category === selectedCategory);
 
+    const handleJoinChallenge = () => {
+        setIsJoinedChallenge(true);
+        setActiveModal(null);
+        showToast("Anda telah bergabung dalam tantangan!");
+    };
+
+    const handleJoinEvent = (id: number) => {
+        setJoinedEvents([...joinedEvents, id]);
+        setActiveModal(null);
+        showToast("Pendaftaran event berhasil!");
+    };
+
     return (
         <div className="flex flex-col gap-6 p-4 pb-24 bg-white min-h-screen relative">
             {/* Toast Notification */}
@@ -78,11 +94,119 @@ export default function CommunityPage() {
                         initial={{ opacity: 0, y: -20, x: "-50%" }}
                         animate={{ opacity: 1, y: 20, x: "-50%" }}
                         exit={{ opacity: 0, y: -20, x: "-50%" }}
-                        className="fixed top-4 left-1/2 -translate-x-1/2 z-[60] bg-primary-dark text-white px-6 py-3 rounded-2xl shadow-2xl font-bold flex items-center gap-2 border border-white/10"
+                        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] bg-primary-dark text-white px-6 py-3 rounded-2xl shadow-2xl font-bold flex items-center gap-2 border border-white/10"
                     >
                         <CheckCircle2 className="w-4 h-4 text-green-400" />
                         {toast.message}
                     </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Modals Overlay */}
+            <AnimatePresence>
+                {activeModal && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setActiveModal(null)}
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[70]"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="fixed inset-x-4 top-[15%] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-[400px] z-[80] bg-white rounded-[40px] p-8 shadow-2xl overflow-hidden"
+                        >
+                            {activeModal === "challenge" && (
+                                <div className="flex flex-col gap-6 items-center text-center">
+                                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
+                                        <Flame className="w-10 h-10 text-primary fill-primary" />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <h3 className="text-2xl font-black text-primary-dark">Gabung Tantangan?</h3>
+                                        <p className="text-sm text-neutral-500 font-medium">Buat lampu dari botol plastik, kumpulkan <span className="text-primary font-bold">500 Eco Points</span>, dan jadilah pahlawan lingkungan!</p>
+                                    </div>
+                                    <div className="flex flex-col w-full gap-3 mt-4">
+                                        <button
+                                            onClick={handleJoinChallenge}
+                                            className="w-full bg-primary text-white font-black py-4 rounded-2xl shadow-lg border-b-4 border-primary-dark active:scale-95 transition-all"
+                                        >
+                                            Ya, Saya Bergabung!
+                                        </button>
+                                        <button
+                                            onClick={() => setActiveModal(null)}
+                                            className="w-full bg-neutral-50 text-neutral-400 font-bold py-4 rounded-2xl active:scale-95 transition-all"
+                                        >
+                                            Nanti Saja
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeModal === "event" && selectedEvent && (
+                                <div className="flex flex-col gap-6">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center shrink-0">
+                                            {selectedEvent.icon}
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <h3 className="text-xl font-black text-primary-dark leading-tight">{selectedEvent.title}</h3>
+                                            <span className="text-xs font-bold text-primary uppercase tracking-widest">{selectedEvent.category}</span>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <div className="flex flex-col gap-1">
+                                            <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest px-1">Nama Lengkap</label>
+                                            <input type="text" placeholder="Masukkan nama Anda" className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                                        </div>
+                                        <div className="flex flex-col gap-1">
+                                            <label className="text-[10px] font-black text-neutral-400 uppercase tracking-widest px-1">Nomor WhatsApp</label>
+                                            <input type="tel" placeholder="0812..." className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => handleJoinEvent(selectedEvent.id)}
+                                        className="w-full bg-primary text-white font-black py-4 rounded-2xl shadow-lg border-b-4 border-primary-dark active:scale-95 transition-all mt-4"
+                                    >
+                                        Daftar Sekarang
+                                    </button>
+                                </div>
+                            )}
+
+                            {activeModal === "host" && (
+                                <div className="flex flex-col gap-6">
+                                    <div className="flex flex-col gap-1 text-center items-center">
+                                        <div className="w-16 h-16 bg-primary-dark/10 rounded-full flex items-center justify-center mb-2">
+                                            <Users className="w-8 h-8 text-primary-dark" />
+                                        </div>
+                                        <h3 className="text-2xl font-black text-primary-dark tracking-tight">Buat Event Baru</h3>
+                                        <p className="text-xs text-neutral-400 font-medium px-4">Ajukan kegiatan komunitasmu untuk ditinjau oleh tim ReCraft.</p>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <input type="text" placeholder="Nama Event" className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                                        <select className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none">
+                                            <option>Pilih Kategori</option>
+                                            <option>Cleanup</option>
+                                            <option>Workshop</option>
+                                            <option>DIY Project</option>
+                                        </select>
+                                        <input type="text" placeholder="Lokasi Event" className="w-full bg-neutral-50 border border-neutral-100 rounded-2xl px-5 py-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                                    </div>
+                                    <button
+                                        onClick={() => {
+                                            setActiveModal(null);
+                                            showToast("Pengajuan event terkirim!");
+                                        }}
+                                        className="w-full bg-primary-dark text-white font-black py-4 rounded-2xl shadow-lg border-b-4 border-black/20 active:scale-95 transition-all mt-2"
+                                    >
+                                        Ajukan Event
+                                    </button>
+                                </div>
+                            )}
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
 
@@ -136,12 +260,19 @@ export default function CommunityPage() {
                             </p>
                         </div>
 
-                        <button
-                            onClick={() => showToast("Pendaftaran tantangan berhasil!")}
-                            className="mt-4 bg-white text-primary font-black py-4 px-10 rounded-2xl shadow-lg border-b-4 border-neutral-100 active:scale-95 transition-all text-base w-full sm:w-fit"
-                        >
-                            Join Challenge
-                        </button>
+                        {isJoinedChallenge ? (
+                            <div className="mt-4 bg-white/20 backdrop-blur-md text-white font-black py-4 px-10 rounded-2xl flex items-center justify-center gap-2 border border-white/30">
+                                <CheckCircle2 className="w-5 h-5 text-green-300" />
+                                Sudah Bergabung
+                            </div>
+                        ) : (
+                            <button
+                                onClick={() => setActiveModal("challenge")}
+                                className="mt-4 bg-white text-primary font-black py-4 px-10 rounded-2xl shadow-lg border-b-4 border-neutral-100 active:scale-95 transition-all text-base w-full sm:w-fit"
+                            >
+                                Join Challenge
+                            </button>
+                        )}
                     </div>
 
                     {/* Background decorations */}
@@ -160,66 +291,78 @@ export default function CommunityPage() {
 
                 <div className="flex flex-col gap-4">
                     <AnimatePresence mode="popLayout">
-                        {filteredActivities.map((activity, i) => (
-                            <motion.div
-                                layout
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ delay: 0.05 * i }}
-                                key={activity.id}
-                                className="bg-[#f2fcf1] border border-neutral-50 rounded-[32px] p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5 relative overflow-hidden group"
-                            >
-                                {/* Category Badge */}
-                                <div className="absolute top-6 right-6">
-                                    <span className="bg-white/90 backdrop-blur-md text-primary-dark px-3 py-1.5 rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-sm border border-neutral-100">
-                                        {activity.category}
-                                    </span>
-                                </div>
-
-                                <div className="flex flex-col gap-4">
-                                    {/* Icon Box */}
-                                    <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-                                        {activity.icon}
+                        {filteredActivities.map((activity, i) => {
+                            const isJoined = joinedEvents.includes(activity.id);
+                            return (
+                                <motion.div
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.9 }}
+                                    transition={{ delay: 0.05 * i }}
+                                    key={activity.id}
+                                    className="bg-[#f2fcf1] border border-neutral-50 rounded-[32px] p-6 shadow-sm hover:shadow-md transition-all flex flex-col gap-5 relative overflow-hidden group"
+                                >
+                                    {/* Category Badge */}
+                                    <div className="absolute top-6 right-6">
+                                        <span className="bg-white/90 backdrop-blur-md text-primary-dark px-3 py-1.5 rounded-xl text-[10px] font-extrabold uppercase tracking-wider shadow-sm border border-neutral-100">
+                                            {activity.category}
+                                        </span>
                                     </div>
 
-                                    <div className="flex flex-col">
-                                        <h4 className="text-xl font-black text-primary-dark leading-tight">{activity.title}</h4>
-                                        <p className="text-xs text-neutral-500 font-medium mt-2 leading-relaxed opacity-80">
-                                            {activity.description}
-                                        </p>
-                                    </div>
-                                </div>
+                                    <div className="flex flex-col gap-4">
+                                        {/* Icon Box */}
+                                        <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
+                                            {activity.icon}
+                                        </div>
 
-                                <div className="flex flex-col gap-3 pt-4 border-t border-primary/10">
-                                    <div className="flex items-center gap-3 text-xs">
-                                        <Calendar className="w-4 h-4 text-primary opacity-60" />
-                                        <span className="font-bold text-neutral-600">{activity.date}</span>
+                                        <div className="flex flex-col">
+                                            <h4 className="text-xl font-black text-primary-dark leading-tight">{activity.title}</h4>
+                                            <p className="text-xs text-neutral-500 font-medium mt-2 leading-relaxed opacity-80">
+                                                {activity.description}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-3 text-xs">
-                                        <MapPin className="w-4 h-4 text-primary opacity-60" />
-                                        <span className="font-bold text-neutral-600">{activity.location}</span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-xs">
-                                        <Users className="w-4 h-4 text-primary opacity-60" />
-                                        <span className="font-bold text-neutral-600">{activity.participants}</span>
-                                    </div>
-                                </div>
 
-                                <div className="flex items-center justify-between mt-1 pt-4 border-t border-primary/5">
-                                    <div className="flex flex-col">
-                                        <span className="text-[9px] text-neutral-400 font-black uppercase tracking-widest">Organizer</span>
-                                        <span className="text-sm font-black text-primary-dark">{activity.organizer}</span>
+                                    <div className="flex flex-col gap-3 pt-4 border-t border-primary/10">
+                                        <div className="flex items-center gap-3 text-xs">
+                                            <Calendar className="w-4 h-4 text-primary opacity-60" />
+                                            <span className="font-bold text-neutral-600">{activity.date}</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-xs">
+                                            <MapPin className="w-4 h-4 text-primary opacity-60" />
+                                            <span className="font-bold text-neutral-600">{activity.location}</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-xs">
+                                            <Users className="w-4 h-4 text-primary opacity-60" />
+                                            <span className="font-bold text-neutral-600">{activity.participants}</span>
+                                        </div>
                                     </div>
-                                    <button
-                                        onClick={() => showToast(`Berhasil gabung ke ${activity.title}!`)}
-                                        className="flex items-center gap-2 bg-primary text-white text-xs font-black px-6 py-3 rounded-2xl shadow-lg shadow-primary/20 active:scale-95 transition-all focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                                    >
-                                        <UserPlus className="w-4 h-4" /> Gabung
-                                    </button>
-                                </div>
-                            </motion.div>
-                        ))}
+
+                                    <div className="flex items-center justify-between mt-1 pt-4 border-t border-primary/5">
+                                        <div className="flex flex-col">
+                                            <span className="text-[9px] text-neutral-400 font-black uppercase tracking-widest">Organizer</span>
+                                            <span className="text-sm font-black text-primary-dark">{activity.organizer}</span>
+                                        </div>
+                                        {isJoined ? (
+                                            <div className="bg-primary/10 text-primary text-xs font-black px-6 py-3 rounded-2xl flex items-center gap-1 border border-primary/20">
+                                                <CheckCircle2 className="w-4 h-4" /> Terdaftar
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedEvent(activity);
+                                                    setActiveModal("event");
+                                                }}
+                                                className="flex items-center gap-2 bg-primary text-white text-xs font-black px-6 py-3 rounded-2xl shadow-lg shadow-primary/20 active:scale-95 transition-all focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                                            >
+                                                <UserPlus className="w-4 h-4" /> Gabung
+                                            </button>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
                     </AnimatePresence>
                 </div>
             </div>
@@ -228,7 +371,7 @@ export default function CommunityPage() {
             <motion.button
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                onClick={() => showToast("Fitur Buat Komunitas segera hadir!")}
+                onClick={() => setActiveModal("host")}
                 className="w-full bg-primary-dark text-white font-black py-5 rounded-[24px] shadow-xl flex justify-center items-center gap-3 hover:bg-black active:scale-[0.98] transition-all mt-4 border-b-4 border-black/20"
             >
                 <Users className="w-6 h-6 text-green-400" />
