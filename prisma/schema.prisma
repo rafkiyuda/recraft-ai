@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// In a real environment, you would use PostgreSQL
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String         @id @default(uuid())
+  name            String
+  email           String         @unique
+  password        String
+  role            String         @default("USER") // USER, ADMIN, PARTNER
+  points          Int            @default(0)
+  createdAt       DateTime       @default(now())
+  
+  // Relations
+  scans           PlasticScan[]
+  products        MarketplaceProduct[]
+  orders          Order[]
+  donations       Donation[]
+}
+
+model PlasticScan {
+  id                String    @id @default(uuid())
+  userId            String
+  image             String    // Image URL or Path
+  plasticType       String    // PET, HDPE, etc
+  recommendationId  String?   // Could point to a specific generated idea
+  createdAt         DateTime  @default(now())
+
+  user              User      @relation(fields: [userId], references: [id])
+}
+
+model Tutorial {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  videoUrl    String?
+  pdfUrl      String?
+  difficulty  String   // Beginner, Intermediate, Advanced
+  createdAt   DateTime @default(now())
+}
+
+model MarketplaceProduct {
+  id          String   @id @default(uuid())
+  sellerId    String
+  title       String
+  price       Float
+  stock       Int
+  description String
+  image       String
+  createdAt   DateTime @default(now())
+
+  seller      User     @relation(fields: [sellerId], references: [id])
+  orders      Order[]
+}
+
+model Workshop {
+  id          String   @id @default(uuid())
+  title       String
+  date        DateTime
+  price       Float
+  location    String
+  capacity    Int
+  createdAt   DateTime @default(now())
+}
+
+model Order {
+  id          String   @id @default(uuid())
+  userId      String
+  productId   String
+  status      String   // PENDING, COMPLETED, CANCELLED
+  payment     String   // Payment method or transaction id
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+  product     MarketplaceProduct @relation(fields: [productId], references: [id])
+}
+
+model Donation {
+  id            String   @id @default(uuid())
+  userId        String
+  pickupDate    DateTime
+  location      String
+  plasticWeight Float    // In KG
+  status        String   @default("PENDING") // PENDING, PICKED_UP, COMPLETED
+  createdAt     DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model EsgData {
+  id            String   @id @default(uuid())
+  plasticType   String
+  weight        Float    // Volume tracked
+  location      String
+  date          DateTime @default(now())
+}

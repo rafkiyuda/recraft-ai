@@ -1,65 +1,194 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  Scan,
+  GraduationCap,
+  ShoppingBag,
+  Users,
+  Sparkles,
+  Recycle,
+  ArrowRight,
+  Leaf,
+  Trophy
+} from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-col bg-white">
+      {/* Top Banner Gradient */}
+      <div className="relative bg-[#2cc295] bg-gradient-to-br from-[#40d3a5] to-[#1fac6e] text-white pt-8 pb-16 px-6 rounded-b-[40px] flex flex-col items-center text-center shadow-sm">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center gap-4 relative z-10 w-full"
+        >
+          <h1 className="text-3xl font-extrabold tracking-tight">Selamat Datang, R&D! 👋</h1>
+          <p className="text-[15px] font-medium leading-relaxed max-w-[300px]">
+            Bersama mengubah sampah plastik menjadi produk bernilai dan menjaga kelestarian bumi kita.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+          <Link
+            href="/scan"
+            className="mt-4 bg-white text-[#2cc295] font-bold text-lg px-8 py-4 rounded-2xl w-full max-w-[320px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center justify-center gap-3 hover:scale-105 transition-transform"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <Scan className="w-6 h-6" />
+            Mulai Scan Sampah
+          </Link>
+        </motion.div>
+      </div>
+
+      <div className="flex flex-col gap-10 p-6 -mt-2">
+
+        {/* Fitur ReCraft Section */}
+        <section className="flex flex-col items-center text-center gap-2">
+          <h2 className="text-2xl font-extrabold text-[#1f2937]">Fitur ReCraft</h2>
+          <p className="text-sm text-neutral-500 max-w-[280px] leading-relaxed">
+            Jelajahi berbagai fitur untuk membantu Anda berkontribusi pada lingkungan
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 mt-6 w-full">
+            {/* Card 1 */}
+            <Link href="/scan" className="flex flex-col gap-3 p-5 rounded-3xl bg-[#f4fbf9] border border-[#e6f7f3] hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-[#00bcd4] text-white flex items-center justify-center shadow-sm">
+                <Scan className="w-7 h-7" />
+              </div>
+              <div className="flex flex-col gap-1 text-left mt-1">
+                <span className="font-bold text-gray-900 leading-tight">Scan Sampah</span>
+                <span className="text-[12px] text-gray-500 leading-tight">AI scan untuk rekomendasi upcycle</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 mt-2" />
+            </Link>
+
+            {/* Card 2 */}
+            <Link href="/workshops" className="flex flex-col gap-3 p-5 rounded-3xl bg-[#faf5fc] border border-[#f5ebf8] hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-[#cb3eab] text-white flex items-center justify-center shadow-sm">
+                <GraduationCap className="w-7 h-7" />
+              </div>
+              <div className="flex flex-col gap-1 text-left mt-1">
+                <span className="font-bold text-gray-900 leading-tight">Kelas ReCraft</span>
+                <span className="text-[12px] text-gray-500 leading-tight">Workshop prakarya & edukasi</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 mt-2" />
+            </Link>
+
+            {/* Card 3 */}
+            <Link href="/marketplace" className="flex flex-col gap-3 p-5 rounded-3xl bg-[#fffaf5] border border-[#fff2e5] hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-[#ef7e00] text-white flex items-center justify-center shadow-sm">
+                <ShoppingBag className="w-7 h-7" />
+              </div>
+              <div className="flex flex-col gap-1 text-left mt-1">
+                <span className="font-bold text-gray-900 leading-tight">Marketplace</span>
+                <span className="text-[12px] text-gray-500 leading-tight">Jual beli produk upcycle</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 mt-2" />
+            </Link>
+
+            {/* Card 4 */}
+            <Link href="/community" className="flex flex-col gap-3 p-5 rounded-3xl bg-[#f5f8ff] border border-[#eff3ff] hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-[#3f65e2] text-white flex items-center justify-center shadow-sm">
+                <Users className="w-7 h-7" />
+              </div>
+              <div className="flex flex-col gap-1 text-left mt-1">
+                <span className="font-bold text-gray-900 leading-tight">Build Together</span>
+                <span className="text-[12px] text-gray-500 leading-tight">Event & komunitas kolaboratif</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 mt-2" />
+            </Link>
+
+            {/* Card 5 */}
+            <Link href="/community" className="flex flex-col gap-3 p-5 rounded-3xl bg-[#f2fdf6] border border-[#e5fbf0] hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-[#0ac264] text-white flex items-center justify-center shadow-sm">
+                <Sparkles className="w-7 h-7" />
+              </div>
+              <div className="flex flex-col gap-1 text-left mt-1">
+                <span className="font-bold text-gray-900 leading-tight">Bersih Tempatmu</span>
+                <span className="text-[12px] text-gray-500 leading-tight">Event organizer lingkungan</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 mt-2" />
+            </Link>
+
+            {/* Card 6 */}
+            <Link href="/donate" className="flex flex-col gap-3 p-5 rounded-3xl bg-[#fff5f5] border border-[#ffe0e0] hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 rounded-2xl bg-[#f24747] text-white flex items-center justify-center shadow-sm">
+                <Recycle className="w-7 h-7" />
+              </div>
+              <div className="flex flex-col gap-1 text-left mt-1">
+                <span className="font-bold text-gray-900 leading-tight">Donasi Plastik</span>
+                <span className="text-[12px] text-gray-500 leading-tight">Jadwalkan penjemputan plastik</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-gray-400 mt-2" />
+            </Link>
+          </div>
+        </section>
+
+        {/* Dampak Komunitas Section */}
+        <section className="flex flex-col items-center text-center gap-2">
+          <h2 className="text-2xl font-extrabold text-[#1f2937]">Dampak Komunitas ReCraft</h2>
+          <p className="text-sm text-neutral-500 max-w-[280px] leading-relaxed">
+            Bersama kita telah membuat perubahan nyata
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 mt-6 w-full">
+            <div className="bg-white rounded-3xl p-5 flex flex-col items-center text-center shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-neutral-100">
+              <div className="w-12 h-12 rounded-2xl bg-[#f4fbf9] flex items-center justify-center mb-3">
+                <Recycle className="w-6 h-6 text-[#00bcd4]" />
+              </div>
+              <span className="text-xl font-extrabold text-gray-900">12,450</span>
+              <span className="text-[12px] text-gray-500 font-medium leading-tight mt-1">Kg Plastik<br />Dikumpulkan</span>
+            </div>
+
+            <div className="bg-white rounded-3xl p-5 flex flex-col items-center text-center shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-neutral-100">
+              <div className="w-12 h-12 rounded-2xl bg-[#f2fdf6] flex items-center justify-center mb-3">
+                <Leaf className="w-6 h-6 text-[#0ac264]" />
+              </div>
+              <span className="text-xl font-extrabold text-gray-900">8,920</span>
+              <span className="text-[12px] text-gray-500 font-medium leading-tight mt-1">Kg CO₂<br />Diselamatkan</span>
+            </div>
+
+            <div className="bg-white rounded-3xl p-5 flex flex-col items-center text-center shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-neutral-100">
+              <div className="w-12 h-12 rounded-2xl bg-[#f5f8ff] flex items-center justify-center mb-3">
+                <Users className="w-6 h-6 text-[#3f65e2]" />
+              </div>
+              <span className="text-xl font-extrabold text-gray-900">3,200+</span>
+              <span className="text-[12px] text-gray-500 font-medium leading-tight mt-1">Pengguna<br />Aktif</span>
+            </div>
+
+            <div className="bg-white rounded-3xl p-5 flex flex-col items-center text-center shadow-[0_4px_20px_rgb(0,0,0,0.04)] border border-neutral-100">
+              <div className="w-12 h-12 rounded-2xl bg-[#fffaf5] flex items-center justify-center mb-3">
+                <Trophy className="w-6 h-6 text-[#ef7e00]" />
+              </div>
+              <span className="text-xl font-extrabold text-gray-900">450+</span>
+              <span className="text-[12px] text-gray-500 font-medium leading-tight mt-1">Produk<br />Upcycle</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA Banner */}
+        <section>
+          <div className="w-full bg-gradient-to-br from-[#1bb080] to-[#0d9263] rounded-[32px] p-8 flex flex-col items-center text-center text-white relative overflow-hidden shadow-lg">
+            <Leaf className="w-12 h-12 mb-4 drop-shadow-md" />
+            <h2 className="text-2xl font-extrabold leading-tight mb-3 relative z-10 w-full px-2">
+              Mulai Perjalanan Hijau Anda
+            </h2>
+            <p className="text-sm font-medium opacity-90 leading-relaxed mb-6 relative z-10">
+              Setiap tindakan kecil memiliki dampak besar. Mari bersama menjadi bagian dari solusi untuk planet kita.
+            </p>
+
+            <Link href="/donate" className="bg-white text-[#1bb080] font-bold py-3.5 px-6 w-full rounded-2xl flex items-center justify-center gap-2 relative z-10 shadow-md">
+              <Recycle className="w-5 h-5" />
+              Donasi Plastik
+            </Link>
+
+            {/* Empty Box visual cue from the design spec */}
+            <div className="w-full h-14 bg-white rounded-2xl mt-4 opacity-95 flex items-center px-4 relative z-10"></div>
+
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          </div>
+        </section>
+
+      </div>
     </div>
   );
 }
