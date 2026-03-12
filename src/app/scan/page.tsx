@@ -107,7 +107,7 @@ export default function ScanPage() {
             </div>
 
             {/* Bottom Interface Area */}
-            <div className="bg-black text-white p-6 pb-8 rounded-t-3xl relative z-40 flex flex-col items-center gap-6 min-h-[160px]">
+            <div className="bg-black text-white p-6 pb-8 rounded-t-3xl relative z-40 flex flex-col items-center gap-6 min-h-[180px]">
                 {/* Placeholder for layout consistency */}
 
                 <AnimatePresence mode="wait">
@@ -117,7 +117,7 @@ export default function ScanPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9 }}
-                            className="flex flex-col items-center gap-6 w-full absolute top-6 pointer-events-auto"
+                            className="flex flex-col items-center gap-6 w-full pointer-events-auto"
                         >
                             <div className="flex items-center gap-2 px-4 py-2 bg-primary-dark rounded-full border border-primary/20 text-sm">
                                 <Zap className="w-4 h-4 text-primary-light" />
@@ -151,28 +151,30 @@ export default function ScanPage() {
                             key="result-mode"
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="w-full flex flex-col gap-4 text-left absolute top-6 px-6 pointer-events-auto"
+                            className="w-full flex flex-col gap-4 text-left px-2 pointer-events-auto"
                         >
-                            <div className="flex items-start justify-between">
-                                <div>
-                                    <h3 className="text-2xl font-bold flex items-center gap-2">
-                                        {result.plasticType} <CheckCircle2 className="text-primary w-6 h-6" />
+                            <div className="flex items-start justify-between gap-3">
+                                <div className="flex-1">
+                                    <h3 className="text-xl md:text-2xl font-bold flex flex-wrap items-center gap-2 leading-tight">
+                                        {result.plasticType} <CheckCircle2 className="text-primary w-5 h-5 md:w-6 md:h-6 shrink-0" />
                                     </h3>
-                                    <p className="text-neutral-400 text-sm mt-1">{result.description}</p>
+                                    <p className="text-neutral-400 text-xs md:text-sm mt-2 leading-relaxed">{result.description}</p>
                                 </div>
-                                <button onClick={resetScan} className="p-2 bg-neutral-800 rounded-full text-neutral-300">
+                                <button onClick={resetScan} className="p-2 bg-neutral-800 rounded-full text-neutral-300 hover:bg-neutral-700 shrink-0 transition-colors">
                                     <RefreshCw className="w-5 h-5" />
                                 </button>
                             </div>
 
-                            <div className="mt-2 h-[40vh] overflow-y-auto pr-2 flex flex-col gap-3 pb-20">
-                                <h4 className="font-semibold text-primary">Ide DIY</h4>
+                            <div className="mt-4 max-h-[45vh] overflow-y-auto pr-2 flex flex-col gap-3 custom-scrollbar">
+                                <h4 className="font-semibold text-primary text-sm uppercase tracking-wider">Ide DIY Upcycling</h4>
                                 {result.ideas.map((idea, index) => (
-                                    <div key={index} className="bg-primary-dark border border-primary/10 p-4 rounded-2xl">
-                                        <h5 className="font-bold text-white text-sm mb-1">{idea.title}</h5>
+                                    <div key={index} className="bg-primary-dark/40 border border-primary/10 p-4 rounded-2xl hover:border-primary/30 transition-colors">
+                                        <h5 className="font-bold text-white text-sm mb-1.5">{idea.title}</h5>
                                         <p className="text-white/70 text-xs leading-relaxed">{idea.description}</p>
                                     </div>
                                 ))}
+                                {/* Bottom space for scrolling */}
+                                <div className="h-6 shrink-0"></div>
                             </div>
                         </motion.div>
                     )}

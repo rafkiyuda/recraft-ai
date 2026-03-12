@@ -14,28 +14,25 @@ export async function POST(req: Request) {
         });
 
         const prompt = `
-      You are an expert in circular economy and upcycling. 
-      Analyze the provided image of a plastic waste item. 
-      1. Identify the likely type of plastic (e.g., PET, HDPE, PVC, LDPE, PP, PS, OR Other).
-      2. Provide 3 specific, creative, and practical DIY upcycling ideas for this exact item.
-      Respond in strict JSON format with this structure:
+      Anda adalah ahli dalam ekonomi sirkular dan upcycling.
+      Analisis gambar item limbah plastik yang diberikan.
+      Identifikasi jenis plastik dan berikan 3 ide upcycling DIY yang kreatif.
+      Berikan respon dalam format JSON yang ketat dalam Bahasa Indonesia:
       {
-        "plasticType": "Name of Plastic Type Detected",
-        "description": "Short description of what the item appears to be",
+        "plasticType": "Jenis Plastik",
+        "description": "Deskripsi item",
         "ideas": [
-          { "title": "Idea 1 Title", "description": "Short description of how to make it" },
-          { "title": "Idea 2 Title", "description": "Short description of how to make it" },
-          { "title": "Idea 3 Title", "description": "Short description of how to make it" }
+          { "title": "Judul Ide", "description": "Cara pembuatannya" },
+          { "title": "Judul Ide", "description": "Cara pembuatannya" },
+          { "title": "Judul Ide", "description": "Cara pembuatannya" }
         ]
       }
-      Do not include any markdown formatting wrappers like \`\`\`json. Just output the raw JSON string.
     `;
 
-        // Strip the data:image/jpeg;base64, prefix if present
         const cleanBase64 = imageBase64.replace(/^data:image\/(png|jpeg|webp|jpg);base64,/, "");
 
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-pro",
+        const result = await ai.models.generateContent({
+            model: "gemini-3-flash-preview",
             contents: [
                 {
                     role: "user",
@@ -52,15 +49,16 @@ export async function POST(req: Request) {
             ]
         });
 
-        const textResult = response.text || "";
-        // Clean up possible markdown artifacts if model ignored the instruction
+        const textResult = result.text || "";
         const cleanedText = textResult.replace(/^```json/g, "").replace(/```$/g, "").trim();
-
         const jsonResponse = JSON.parse(cleanedText);
 
         return NextResponse.json(jsonResponse);
-    } catch (error) {
-        console.error("Error analyzing image:", error);
-        return NextResponse.json({ error: "Failed to analyze image" }, { status: 500 });
+    } catch (error: any) {
+        console.error("Analysis Error:", error);
+        return NextResponse.json({
+            error: "Failed to analyze image",
+            details: error.message || "Unknown error"
+        }, { status: 500 });
     }
 }

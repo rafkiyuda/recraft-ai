@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Scan, GraduationCap, ShoppingBag, Users } from "lucide-react";
+import { Home, Scan, GraduationCap, ShoppingBag, Users, MessageCircle } from "lucide-react";
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -11,7 +11,7 @@ export default function BottomNav() {
     { label: "Beranda", href: "/", icon: Home },
     { label: "Scan", href: "/scan", icon: Scan },
     { label: "Kelas", href: "/workshops", icon: GraduationCap },
-    { label: "Marketplace", href: "/marketplace", icon: ShoppingBag },
+    { label: "Pasar", href: "/marketplace", icon: ShoppingBag },
     { label: "Komunitas", href: "/community", icon: Users },
   ];
 
