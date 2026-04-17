@@ -7,11 +7,11 @@ export default function Header() {
         <header className="sticky top-0 w-full max-w-md mx-auto bg-white/80 backdrop-blur-md z-50 border-b border-neutral-100">
             <div className="flex items-center justify-between px-4 h-14">
                 <Link href="/" className="flex items-center space-x-2">
-                    <div className="relative w-10 h-10 flex items-center justify-center">
+                    <div className="relative h-10 w-auto flex items-center justify-center">
                         <img
-                            src="/assets/logo.png"
+                            src="/assets/logo_landscape.png"
                             alt="Logo"
-                            className="w-full h-full object-contain"
+                            className="h-full w-auto object-contain"
                             onError={(e) => {
                                 e.currentTarget.style.display = 'none';
                                 e.currentTarget.nextElementSibling?.classList.remove('hidden');

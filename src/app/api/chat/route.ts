@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     `;
 
         const result = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
+            model: "gemini-2.5-flash",
             contents: [
                 {
                     role: "user",
