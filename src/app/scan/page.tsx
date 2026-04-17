@@ -173,6 +173,22 @@ export default function ScanPage() {
                                         <p className="text-white/70 text-xs leading-relaxed">{idea.description}</p>
                                     </div>
                                 ))}
+                                
+                                {/* Dummy Video Section for Prototype */}
+                                <div className="mt-2 bg-primary-dark/40 border border-primary/10 p-4 rounded-2xl mb-2">
+                                    <h5 className="font-bold text-white text-sm mb-3">Video Referensi (Dummy)</h5>
+                                    <div className="w-full aspect-[9/16] rounded-xl overflow-hidden bg-black/50 border border-neutral-800">
+                                        <iframe 
+                                            className="w-full h-full pointer-events-auto"
+                                            src="https://www.youtube.com/embed/3_uRDmyOays?modestbranding=1&rel=0" 
+                                            title="YouTube video player" 
+                                            frameBorder="0"
+                                            referrerPolicy="strict-origin-when-cross-origin"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                            allowFullScreen>
+                                        </iframe>
+                                    </div>
+                                </div>
                                 {/* Bottom space for scrolling */}
                                 <div className="h-6 shrink-0"></div>
                             </div>

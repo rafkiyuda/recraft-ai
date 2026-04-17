@@ -21,7 +21,6 @@ export default function Header() {
                             R
                         </div>
                     </div>
-                    <span className="font-bold text-lg tracking-tight text-primary">ReCraft</span>
                 </Link>
                 <div className="flex items-center space-x-3">
                     <button className="relative p-2 text-neutral-600 hover:text-primary transition-colors">
